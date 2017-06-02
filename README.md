@@ -35,6 +35,25 @@
   	```
 ## Usage
 ```javascript
-import RNPlayAudio from 'react-native-play-audio';
+import AudioPlayer from 'react-native-play-audio';
 
-  
+AudioPlayer.onEnd(() => {
+  console.log('on end');
+});
+
+const url 'http://sample.com/sample.mp3';
+AudioPlayer.prepare(url, () => {
+  AudioPlayer.play();
+    
+  AudioPlayer.getDuration((duration) => {
+    console.log(duration);
+  });
+  setInterval(() => {
+    AudioPlayer.getCurrentTime((currentTime) => {
+      console.log(currentTime);
+    });
+  }, 1000);
+  AudioPlayer.stop();
+  AudioPlayer.pause();
+  AudioPlayer.setCurrentTime(50.5);
+})
