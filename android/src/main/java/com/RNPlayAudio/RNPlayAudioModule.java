@@ -10,7 +10,6 @@ import java.io.IOException;
 import android.util.Log;
 
 public class RNPlayAudioModule extends ReactContextBaseJavaModule {
-    Callback onReady;
     Callback onEnd;
     MediaPlayer mediaPlayer;
 
@@ -19,7 +18,7 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void prepare(String url) {
+    public void prepare(String url, final Callback onReady) {
         mediaPlayer = new MediaPlayer();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -31,7 +30,7 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
         });
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             public void onPrepared(MediaPlayer mp) {
-                if (onEnd != null) {
+                if (onReady != null) {
                     onReady.invoke();
                 }
             }
@@ -49,11 +48,6 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void play() {
         mediaPlayer.start();
-    }
-
-    @ReactMethod
-    public void onReady(Callback callback) {
-        onReady = callback;
     }
 
     @ReactMethod
