@@ -1,20 +1,28 @@
 
 {
   "name": "react-native-play-audio",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "React Native module for playing audio on iOS and Android",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ananevam/react-native-play-audio.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "react-component",
+    "sound",
+    "audio streaming",
+    "audio",
+    "web radio",
+    "player"
   ],
-  "author": "",
-  "license": "",
+  "author": "Ananev Alexander <minoru.null@gmail.com>",
+  "license": "MIT",
   "peerDependencies": {
-    "react-native": "^0.41.2",
-    "react-native-windows": "0.41.0-rc.1"
-
+    "react-native": "^0.41.2"
   }
 }
