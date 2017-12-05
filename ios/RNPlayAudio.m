@@ -1,5 +1,5 @@
 #import "RNPlayAudio.h"
-#import "RCTBridgeModule.h"
+
 #import "RCTEventDispatcher.h"
 
 #if __has_include("RCTUtils.h")
