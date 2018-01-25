@@ -16,7 +16,7 @@ public class RNPlayAudioPackage implements ReactPackage {
       return Arrays.<NativeModule>asList(new RNPlayAudioModule(reactContext));
     }
 
-    @Override
+//     @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
       return Collections.emptyList();
     }
