@@ -46,6 +46,35 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void prepareWithFile(String name, String type, final Callback onReady) {
+        mediaPlayer = new MediaPlayer();
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                if (onEnd != null) {
+                    onEnd.invoke();
+                }
+            }
+        });
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                if (onReady != null) {
+                    onReady.invoke();
+                }
+            }
+        });
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            Uri uri = Uri.parse("android.resource://" + getReactApplicationContext().getPackageName() + "/raw/" + name);
+            mediaPlayer.setDataSource(uri);
+            mediaPlayer.prepareAsync();
+        } catch(IOException e) {
+            Log.e("RNPlayAudio", "Exception", e);
+        }
+    }
+
+    @ReactMethod
     public void play() {
         mediaPlayer.start();
     }

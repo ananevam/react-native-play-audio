@@ -26,12 +26,17 @@
    return self;
 }
 
++ (BOOL)requiresMainQueueSetup
+{
+    return NO;
+}
+
 - (dispatch_queue_t)methodQueue
 {
     return dispatch_get_main_queue();
 }
 
-- (void) playerDidFinishPlaying:(NSNotification *) note {
+- (void)playerDidFinishPlaying:(NSNotification *) note {
     if (onEnd) {
         onEnd(@[]);
     }
@@ -113,6 +118,23 @@ RCT_EXPORT_METHOD(prepare:(NSString*)url: (RCTResponseSenderBlock)callback) {
     [self addObservers:[player currentItem]];
 }
 
+RCT_EXPORT_METHOD(prepareWithFile:(NSString *)name ofType:(NSString *)type: (RCTResponseSenderBlock)callback) {
+    NSString *soundFilePath = [[NSBundle mainBundle] pathForResource:name ofType:type];
+    NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
+
+    AVAsset *asset = [AVAsset assetWithURL:soundFileURL];
+    AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
+
+    if (player) {
+        [self removeObservers:[player currentItem]];
+        [player replaceCurrentItemWithPlayerItem:playerItem];
+    } else {
+        player = [AVPlayer playerWithPlayerItem:playerItem];
+    }
+    onReady = callback;
+    [self addObservers:[player currentItem]];
+}
+
 RCT_EXPORT_METHOD(play) {
 	if (player) {
   		[player play];
@@ -151,4 +173,3 @@ RCT_EXPORT_METHOD(getDuration: (RCTResponseSenderBlock)callback) {
     }
 }
 @end
-  
