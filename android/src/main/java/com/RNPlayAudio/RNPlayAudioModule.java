@@ -79,7 +79,7 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             Uri uri = Uri.parse("android.resource://" + getReactApplicationContext().getPackageName() + "/raw/" + name);
-            mediaPlayer.setDataSource(uri);
+            mediaPlayer.setDataSource(getCurrentActivity(), uri);
             mediaPlayer.prepareAsync();
         } catch(IOException e) {
             Log.e("RNPlayAudio", "Exception", e);
