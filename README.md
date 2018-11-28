@@ -41,8 +41,9 @@ AudioPlayer.onEnd(() => {
   console.log('on end');
 });
 
-const url 'http://sample.com/sample.mp3';
-AudioPlayer.prepare(url, () => {
+const URL = 'http://sample.com/sample.mp3';
+
+const callback = () => {
   AudioPlayer.play();
     
   AudioPlayer.getDuration((duration) => {
@@ -53,7 +54,18 @@ AudioPlayer.prepare(url, () => {
       console.log(currentTime);
     });
   }, 1000);
-  AudioPlayer.stop();
-  AudioPlayer.pause();
-  AudioPlayer.setCurrentTime(50.5);
-})
+}
+
+AudioPlayer.prepare(URL, callback);
+AudioPlayer.prepareWithFile('sample', 'mp3', callback);
+
+// AudioPlayer.stop();
+// AudioPlayer.pause();
+// AudioPlayer.setTime(50.5);
+
+#### What is new in version 0.2
+
+- Added ability to load local files
+- Fixed main_queue warning
+- Increased react-native version in package.json
+- Updated this README.md file

@@ -9,6 +9,8 @@ import android.media.AudioManager;
 import java.io.IOException;
 import android.util.Log;
 
+import android.net.Uri;
+
 public class RNPlayAudioModule extends ReactContextBaseJavaModule {
     Callback onEnd;
     MediaPlayer mediaPlayer;
@@ -19,6 +21,11 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void prepare(String url, final Callback onReady) {
+        
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+        }
+        
         mediaPlayer = new MediaPlayer();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -39,6 +46,40 @@ public class RNPlayAudioModule extends ReactContextBaseJavaModule {
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mediaPlayer.setDataSource(url);
+            mediaPlayer.prepareAsync();
+        } catch(IOException e) {
+            Log.e("RNPlayAudio", "Exception", e);
+        }
+    }
+
+    @ReactMethod
+    public void prepareWithFile(String name, String type, final Callback onReady) {
+        
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+        }
+        
+        mediaPlayer = new MediaPlayer();
+
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                if (onEnd != null) {
+                    onEnd.invoke();
+                }
+            }
+        });
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                if (onReady != null) {
+                    onReady.invoke();
+                }
+            }
+        });
+
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            Uri uri = Uri.parse("android.resource://" + getReactApplicationContext().getPackageName() + "/raw/" + name);
+            mediaPlayer.setDataSource(getCurrentActivity(), uri);
             mediaPlayer.prepareAsync();
         } catch(IOException e) {
             Log.e("RNPlayAudio", "Exception", e);
